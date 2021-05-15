@@ -1,3 +1,4 @@
+import 'package:ecommerce_basics_1/services/AuthService.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,6 +16,13 @@ class _LoginScreenState extends State<LoginScreen> {
   // whether it is validated or not
   // it can trigger the validation
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  // Instance of the service
+  AuthService _authService = AuthService();
+
+  // Variables to keep track of the text fields
+  String email;
+  String password;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +72,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       return null;
                     },
+                    onChanged: (value) {
+                      setState(() {
+                         email = value;                     
+                      });
+                    },
                   ),
                   // Added a space in between the text forms
                   SizedBox(
@@ -86,14 +99,35 @@ class _LoginScreenState extends State<LoginScreen> {
                       if(value.length < 6 ) {
                         return "Password should be more than 5 characters";
                       }
+                      // Password should have atleast 1
+                      // Uppercase letter, lowercase letter, digit, special character
+                      RegExp hasUpper = RegExp(r'[A-Z]');
+                      RegExp hasLower = RegExp(r'[a-z]');
+                      RegExp hasDigit = RegExp(r'\d');
+                      RegExp hasPunct = RegExp(r'[_!@#\$&*~-]');
+
+                      if (!hasUpper.hasMatch(value))
+                        return 'Password must have at least one uppercase character';
+                      if (!hasLower.hasMatch(value))
+                        return 'Password must have at least one lowercase character';
+                      if (!hasDigit.hasMatch(value))
+                        return 'Password must have at least one number';
+                      if (!hasPunct.hasMatch(value))
+                        return 'Passwordd need at least one special character like !@#\$&*~-';
+
                       return null;
                     },
                     obscureText: true,
+                     onChanged: (value) {
+                      setState(() {
+                         password = value;                     
+                      });
+                    },
                   ),
                 ],
                 )
               ),
-              
+              SizedBox(height: 20),
               // Changed the textbutton to elevatedbutton to add the design
               // implements an icon button, icon and label are required
               ElevatedButton.icon(
@@ -103,6 +137,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   // Trigger the LOGIN
                   if(formkey.currentState.validate()) {
                     print("You can login");
+                    var userObj = _authService.loginUser(email, password);
+                    if(userObj != null) {
+                      Navigator.pushReplacementNamed(context, 'dash');
+                    }
                   } else {
                     print("You cannot login");
                   }

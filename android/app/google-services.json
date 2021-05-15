@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1000599890098",
+    "project_id": "cis-226-project-flutter",
+    "storage_bucket": "cis-226-project-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000599890098:android:c858244e875d31897b41ab",
+        "android_client_info": {
+          "package_name": "edu.ecommerce.basics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1000599890098-mc70ff51e2oimdgjh1t68l094gbhalfo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBicJbE6Lq4WyHAsipJFZPKUkcIWmE5ypA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1000599890098-mc70ff51e2oimdgjh1t68l094gbhalfo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

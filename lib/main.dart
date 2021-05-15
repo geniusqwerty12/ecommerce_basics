@@ -1,3 +1,4 @@
+import 'package:ecommerce_basics_1/DashboardScreen.dart';
 import 'package:ecommerce_basics_1/authenticationScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,11 @@ import 'package:flutter/material.dart';
 // Add form fields - done
 // Add form field validation - done
 // Add a simple design - done
-// Integrate Firebase to enable the Login/Sign up functionalities
+// Update validation - done
+// Integrate Firebase to enalbe the Login/Sign up functionalities
+  // Add dependency and service files
+  // Add functionality on Login page
+  // Add functionality on Sign up page
 
 void main() {
   runApp(MyApp());
@@ -22,7 +27,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: AuthenticationScreen(),
+      // home: AuthenticationScreen(),
+
+      initialRoute: 'auth',
+      routes: {
+        'auth': (context) => AuthenticationScreen(),
+        'dash': (context) => DashboardScreen(),
+      },
     );
   }
 }
