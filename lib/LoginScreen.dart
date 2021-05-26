@@ -24,6 +24,9 @@ class _LoginScreenState extends State<LoginScreen> {
   String email;
   String password;
 
+  // variable to determine if the login function is ongoing
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     // Add a basic design here
@@ -33,6 +36,11 @@ class _LoginScreenState extends State<LoginScreen> {
       // add body that will house the button
 
       // Wrapped the Column widget with a Container to add padding
+      // body: _isLoading 
+      // ? Center(
+      //   child:  CircularProgressIndicator(),
+      // ) 
+      // : Container(
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Center(
@@ -51,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                 children: [
                   TextFormField(
+                    enabled: !_isLoading,
                     decoration: InputDecoration(
                       // improve the design of the text form field
                       hintText: "example@gmail.com",
@@ -83,6 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 15,
                   ),
                   TextFormField(
+                    enabled: !_isLoading,
                     decoration: InputDecoration(
                       hintText: "*****",
                       labelText: "Password",
@@ -128,28 +138,39 @@ class _LoginScreenState extends State<LoginScreen> {
                 )
               ),
               SizedBox(height: 20),
+
+              // Show the loading widget here instead
+              _isLoading ? Center(child: CircularProgressIndicator()) : Container(),
+              
               // Changed the textbutton to elevatedbutton to add the design
               // implements an icon button, icon and label are required
               ElevatedButton.icon(
                 icon: Icon(Icons.login),
                 label: Text("LOGIN"),
-                onPressed: () {
+                onPressed: _isLoading ? null : () {
                   // Trigger the LOGIN
                   if(formkey.currentState.validate()) {
                     print("You can login");
+                    setState(() {
+                      _isLoading = true;          
+                    });
+
                     var userObj = _authService.loginUser(email, password);
                     if(userObj != null) {
                       Navigator.pushReplacementNamed(context, 'dash');
                     }
                   } else {
                     print("You cannot login");
+                    setState(() {
+                      _isLoading = false;          
+                    });
                   }
                 },
               ),
 
               ElevatedButton(
                 child: Text("Sign up here"),
-                onPressed: () {
+                onPressed: _isLoading ? null : () {
                   widget.toggleScreen();
                 },
               ),

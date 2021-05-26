@@ -1,4 +1,5 @@
 import 'package:ecommerce_basics_1/services/AuthService.dart';
+import 'package:ecommerce_basics_1/services/DatabaseService.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -18,9 +19,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String _email;
   String _password;
   bool _didAgree = false;
-  
+  String _firstName;
+  String _lastName;
+
   // Auth Service class
   AuthService _authService = AuthService();
+
+  // Variable to determine the loading of register
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +46,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Column(
                 children: [
                   TextFormField(
-                  decoration: InputDecoration(
+                    enabled: !_isLoading,
+                    decoration: InputDecoration(
                     hintText: "John",
                     labelText: "First name",
                     fillColor: Colors.white,
@@ -55,11 +62,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     }
                     return null;
                   },
+                  onChanged: (value) {
+                    setState(() {
+                      _firstName = value;                      
+                    });
+                  },
                 ),
                 SizedBox(
                   height: 15,
                 ),
                 TextFormField(
+                  enabled: !_isLoading,
                   decoration: InputDecoration(
                     hintText: "Doe",
                     labelText: "Last name",
@@ -75,11 +88,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     }
                     return null;
                   },
+                  onChanged: (value) {
+                    setState(() {
+                      _lastName = value;                      
+                    });
+                  },
                 ),
                 SizedBox(
                   height: 15,
                 ),
                 TextFormField(
+                  enabled: !_isLoading,
                   decoration: InputDecoration(
                     hintText: "example@gmail.com",
                     labelText: "Email",
@@ -110,6 +129,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: 15,
                 ),
                 TextFormField(
+                  enabled: !_isLoading,
                   decoration: InputDecoration(
                     hintText: "*******",
                     labelText: "Password",
@@ -157,12 +177,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 15,
                   ),
                   TextFormField(
+                    enabled: !_isLoading,
                     decoration: InputDecoration(
-                      hintText: "*******",
-                      labelText: "Confirm Password",
-                      fillColor: Colors.white,
-                      // properties related to border
-                      border: new OutlineInputBorder(
+                    hintText: "*******",
+                    labelText: "Confirm Password",
+                    fillColor: Colors.white,
+                    // properties related to border
+                    border: new OutlineInputBorder(
                         borderSide: new BorderSide(color: Colors.black),
                         borderRadius: BorderRadius.circular(15),
                       )
@@ -179,6 +200,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                   // Checkbox
                   FormField(
+                    enabled: !_isLoading,
                     initialValue: _didAgree,
                     builder: (FormFieldState<bool> state){
                       return Column(
@@ -222,20 +244,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
             SizedBox(
               height: 25,
             ),
+
+             // Show the loading widget here instead
+              _isLoading ? Center(child: CircularProgressIndicator()) : Container(),
+
             ElevatedButton.icon(
               icon: Icon(Icons.app_registration),
               label: Text("REGISTER"),
-              onPressed: () {
+              onPressed: _isLoading ? null : () {
                 // TODO trigger the registration
                 // Trigger the validation first before adding the new user
                 if(formkey.currentState.validate()){
+                  setState(() {
+                      _isLoading = true;          
+                  });
                   print("User can register!");
 
-                  var userObj = _authService.registerUser(_email, _password);
+                  var userObj = _authService.registerUser(_email, _password, _firstName, _lastName);
                   if(userObj != null) {
                     Navigator.pushReplacementNamed(context, 'dash');
                   }
                 } else {
+                  setState(() {
+                      _isLoading = false;          
+                  });
                   print("User cannot register");
                 }
               },
@@ -245,7 +277,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             ElevatedButton(
               child: Text("Login here"),
-              onPressed: () {
+              onPressed: _isLoading ? null : () {
                 widget.toggleScreen();
               },
             ),

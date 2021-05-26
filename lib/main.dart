@@ -1,5 +1,6 @@
 import 'package:ecommerce_basics_1/DashboardScreen.dart';
 import 'package:ecommerce_basics_1/authenticationScreen.dart';
+import 'package:ecommerce_basics_1/splashScreen.dart';
 import 'package:flutter/material.dart';
 
 // TODOs
@@ -29,8 +30,10 @@ class MyApp extends StatelessWidget {
       ),
       // home: AuthenticationScreen(),
 
-      initialRoute: 'auth',
+      // Change the initial route/page to Splashscreen
+      initialRoute: 'splash',
       routes: {
+        'splash': (context) => SplashScreen(),
         'auth': (context) => AuthenticationScreen(),
         'dash': (context) => DashboardScreen(),
       },

@@ -1,3 +1,4 @@
+import 'package:ecommerce_basics_1/services/DatabaseService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // Auth service to contain all of the functions related to authentication
@@ -19,11 +20,16 @@ class AuthService {
   }
 
   // Register function
-    Future registerUser(String email, String password) async {
+    Future registerUser(String email, String password, String firstName, String lastName) async {
     try {
       // Call the firebase function to login
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       print(result.user);
+
+      // Database Service class
+      DatabaseService _databaseService = DatabaseService();
+      await _databaseService.addUserData(result.user.uid, email, firstName, lastName);
+
       return result.user;
     } catch(e) {
       print("Error logging in");
@@ -33,4 +39,25 @@ class AuthService {
   }
 
   // Logout
+  Future logoutUser() async {
+    try {
+      return _auth.signOut();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  // Check if the user signed in previously
+  Future isLoggedIn() async {
+    try {
+      // Firebase will get the user from the disk cache
+      FirebaseUser user = await _auth.currentUser();
+      print(user);
+      return user;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 }
