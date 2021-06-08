@@ -1,4 +1,5 @@
 import 'package:ecommerce_basics_1/DashboardScreen.dart';
+import 'package:ecommerce_basics_1/ItemInfoScreen.dart';
 import 'package:ecommerce_basics_1/authenticationScreen.dart';
 import 'package:ecommerce_basics_1/splashScreen.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         'splash': (context) => SplashScreen(),
         'auth': (context) => AuthenticationScreen(),
         'dash': (context) => DashboardScreen(),
+        'itemInfo' : (context) => ItemInfoScreen(),
       },
     );
   }

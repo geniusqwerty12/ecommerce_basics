@@ -147,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ElevatedButton.icon(
                 icon: Icon(Icons.login),
                 label: Text("LOGIN"),
-                onPressed: _isLoading ? null : () {
+                onPressed: _isLoading ? null : () async {
                   // Trigger the LOGIN
                   if(formkey.currentState.validate()) {
                     print("You can login");
@@ -155,9 +155,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       _isLoading = true;          
                     });
 
-                    var userObj = _authService.loginUser(email, password);
+                    var userObj = await _authService.loginUser(email, password);
                     if(userObj != null) {
-                      Navigator.pushReplacementNamed(context, 'dash');
+                      Navigator.pushReplacementNamed(context, 'dash', arguments: userObj.uid);
                     }
                   } else {
                     print("You cannot login");

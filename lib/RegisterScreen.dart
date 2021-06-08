@@ -251,7 +251,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ElevatedButton.icon(
               icon: Icon(Icons.app_registration),
               label: Text("REGISTER"),
-              onPressed: _isLoading ? null : () {
+              onPressed: _isLoading ? null : () async {
                 // TODO trigger the registration
                 // Trigger the validation first before adding the new user
                 if(formkey.currentState.validate()){
@@ -260,9 +260,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   });
                   print("User can register!");
 
-                  var userObj = _authService.registerUser(_email, _password, _firstName, _lastName);
+                  var userObj = await _authService.registerUser(_email, _password, _firstName, _lastName);
                   if(userObj != null) {
-                    Navigator.pushReplacementNamed(context, 'dash');
+                    // navigate to the dashboard and pass the user id
+                    Navigator.pushReplacementNamed(context, 'dash', arguments: userObj.uid);
                   }
                 } else {
                   setState(() {
