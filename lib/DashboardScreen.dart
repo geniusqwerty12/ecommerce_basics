@@ -56,6 +56,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             //     Navigator.pushReplacementNamed(context, 'auth');
             //   },
             // ),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pushNamed(context, "cart");
+              }, 
+              icon: Icon(Icons.shopping_bag_rounded),
+              label: Text("My Cart"))
           ],
         ),
       ),
