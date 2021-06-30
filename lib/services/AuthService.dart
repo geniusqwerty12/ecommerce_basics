@@ -9,7 +9,9 @@ class AuthService {
   Future loginUser(String email, String password) async {
     try {
       // Call the firebase function to login
-      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      // Old code
+      // AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       print(result.user);
       return result.user;
     } catch(e) {
@@ -23,7 +25,9 @@ class AuthService {
     Future registerUser(String email, String password, String firstName, String lastName) async {
     try {
       // Call the firebase function to login
-      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      // Old code
+      // AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       print(result.user);
 
       // Database Service class
@@ -52,7 +56,9 @@ class AuthService {
   Future isLoggedIn() async {
     try {
       // Firebase will get the user from the disk cache
-      FirebaseUser user = await _auth.currentUser();
+      // Old code
+      // FirebaseUser user = await _auth.currentUser();
+      User user = _auth.currentUser;
       print(user);
       return user;
     } catch (e) {

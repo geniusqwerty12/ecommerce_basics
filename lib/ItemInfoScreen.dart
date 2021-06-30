@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_basics_1/services/DatabaseService.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 class ItemInfoScreen extends StatelessWidget {
@@ -12,6 +13,22 @@ class ItemInfoScreen extends StatelessWidget {
 
     String userId = pageParams['userId'];
     DocumentSnapshot item = pageParams['item'];
+
+    // Analytics class for calling the functions
+    FirebaseAnalytics _analytics = FirebaseAnalytics();
+
+    sendAnalytics() async {
+      await _analytics.logEvent(
+        name: "check_item",
+        parameters: <String, dynamic> {
+          'itemId' : item.id,
+          'itemName' : item['itemName'],
+          'userId' : userId,
+        }
+      );
+    }
+
+    sendAnalytics();
 
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +53,7 @@ class ItemInfoScreen extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: () async{
                   print('Add to cart!');
-                  await DatabaseService(uid: userId).addToCart(item.reference.documentID);
+                  await DatabaseService(uid: userId).addToCart(item.id);
                   
                   // Show notification
                   ScaffoldMessenger.of(context).showSnackBar(

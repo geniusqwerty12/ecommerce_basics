@@ -23,7 +23,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   checkUser() async {
-    FirebaseUser user = await _authService.isLoggedIn();
+    // Old code
+    // FirebaseUser user = await _authService.isLoggedIn();
+    User user = await _authService.isLoggedIn();
     if(user != null) {
       // navigate to the dashboard and pass the user id variable
       Navigator.pushReplacementNamed(context, 'dash', arguments: user.uid);

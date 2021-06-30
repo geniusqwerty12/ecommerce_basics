@@ -43,7 +43,7 @@ class _CartScreenState extends State<CartScreen> {
           // print(snapshot.data);
 
           List carts = [];
-          snapshot.data.documents.map( (cart) {
+          snapshot.data.docs.map( (cart) {
             // print(cart['itemId']);
             carts.add(cart);
           }).toList();
@@ -79,7 +79,9 @@ class _CartScreenState extends State<CartScreen> {
                         icon: Icon(Icons.remove),
                         onPressed: () async {
                           print('Remove to cart!');
-                          await _databaseService.removeCart(carts[index].reference.documentID);
+                          // old code
+                          // await _databaseService.removeCart(carts[index].reference.documentID);
+                          await _databaseService.removeCart(carts[index].id);
                           // Show notification
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text("Item has been removed from your cart!"))

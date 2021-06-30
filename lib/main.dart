@@ -3,6 +3,7 @@ import 'package:ecommerce_basics_1/ItemInfoScreen.dart';
 import 'package:ecommerce_basics_1/authenticationScreen.dart';
 import 'package:ecommerce_basics_1/cartScreen.dart';
 import 'package:ecommerce_basics_1/splashScreen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 // TODOs
@@ -17,7 +18,9 @@ import 'package:flutter/material.dart';
   // Add functionality on Login page
   // Add functionality on Sign up page
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 

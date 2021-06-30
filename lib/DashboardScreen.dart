@@ -1,5 +1,6 @@
 import 'package:ecommerce_basics_1/services/AuthService.dart';
 import 'package:ecommerce_basics_1/services/DatabaseService.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 // Dashboard Widget
@@ -16,6 +17,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   // User id variable
   String userId;
+
+  FirebaseAnalytics _analytics = FirebaseAnalytics();
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +105,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           // List of items, this is where we will store the them
           List items = [];
           // insert all of the documents in the items list
-          snapshot.data.documents.map((document) {
+          // Old code
+          // snapshot.data.documents.map((document) {
+          snapshot.data.docs.map((document) {
             items.add(document);
           }).toList();
 
@@ -130,7 +135,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     icon: Icon(Icons.add),
                     onPressed: () async {
                       print('Add to cart!');
-                      await DatabaseService(uid: userId).addToCart(items[index].reference.documentID);
+                      await _analytics.logAddToCart(
+                        itemId: items[index].id, 
+                        itemName: items[index]['itemName'], 
+                        itemCategory: 'none', 
+                        quantity: 1
+                      );
+
+                      await DatabaseService(uid: userId).addToCart(items[index].id);
                       
                       // Show notification
                       ScaffoldMessenger.of(context).showSnackBar(
